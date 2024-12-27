@@ -1,7 +1,16 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import Loading from "@/components/Loading";
 
-export default function Home() {
-  return (
-    <div className="flex items-center justify-center w-screen h-screen"><Button>Welcome! I'm a Button</Button></div>
-  );
+export default function Page() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    (isAuthenticated)
+    ? router.replace("/dashboard")
+    : router.replace("/login")
+  }, [isAuthenticated, router]);
+  return <Loading />;
 }
