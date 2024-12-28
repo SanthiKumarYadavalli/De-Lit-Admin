@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function AddArticleDialog({ isOpen, onClose, onAddArticle }) {
   const [form, setForm] = useState({
@@ -87,14 +88,12 @@ export default function AddArticleDialog({ isOpen, onClose, onAddArticle }) {
               >
                 Description
               </Label>
-              <Input
-                id="description"
-                type="text"
+              <Textarea
+                placeholder="Enter description"
                 value={form.description}
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
                 }
-                placeholder="Article Description .."
               />
             </div>
             {/* PDF File Upload */}
