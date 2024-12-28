@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { Separator } from "./ui/separator";
 import { useAuth } from "@/context/AuthContext";
@@ -49,6 +49,7 @@ export function AppSidebar() {
   const { logout } = useAuth();
   const isMobile = useIsMobile();
   const [logoutDiaglog, setLogoutDialog] = useState(false);
+  const router = useRouter();
   return (
     <>
       <Sidebar>
@@ -146,7 +147,10 @@ export function AppSidebar() {
         <ConfirmationDialog
           isOpen={logoutDiaglog}
           onClose={() => setLogoutDialog(false)}
-          onConfirm={() => logout()}
+          onConfirm={() => {
+            logout();
+            router.push("/login");
+          }}
           title="Confirm Logout"
           message={`Are you sure you want to logout?`}
           submitting={false}
