@@ -2,7 +2,11 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
+<<<<<<< HEAD
 import { ChevronLeft, ChevronRight, PanelLeft } from "lucide-react"
+=======
+import { PanelLeft } from "lucide-react"
+>>>>>>> 0862bb2 (feat: UI for publications page)
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -218,7 +222,11 @@ const Sidebar = React.forwardRef((
 Sidebar.displayName = "Sidebar"
 
 const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) => {
+<<<<<<< HEAD
   const { toggleSidebar, openMobile } = useSidebar()
+=======
+  const { toggleSidebar } = useSidebar()
+>>>>>>> 0862bb2 (feat: UI for publications page)
 
   return (
     (<Button
@@ -232,7 +240,11 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
         toggleSidebar()
       }}
       {...props}>
+<<<<<<< HEAD
       {openMobile ? <ChevronLeft /> : <ChevronRight size={40} /> }
+=======
+      <PanelLeft />
+>>>>>>> 0862bb2 (feat: UI for publications page)
       <span className="sr-only">Toggle Sidebar</span>
     </Button>)
   );
