@@ -9,7 +9,7 @@ export default function SubmitButton({
   loadingText = "Please wait",
 }) {
   return (
-    <Button onClick={onClick} disabled={disabled}>
+    <Button type="submit" onClick={onClick} disabled={disabled}>
       {isLoading ? (
         <>
           <LoaderCircle className="h-4 w-4 animate-spin" />

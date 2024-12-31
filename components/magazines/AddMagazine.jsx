@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function AddMagazineDialog({ isOpen, onClose, onAddMagazine }) {
+export default function AddMagazineDialog({ isOpen, onClose, addItem }) {
   const [form, setForm] = useState({
     title: "",
     coverPhoto: null,
@@ -40,7 +41,7 @@ export default function AddMagazineDialog({ isOpen, onClose, onAddMagazine }) {
     }
 
     // Call the parent handler to add the magazine
-    onAddMagazine(form);
+    addItem(form);
 
     // Reset the form and close the dialog
     setForm({

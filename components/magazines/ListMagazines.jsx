@@ -15,7 +15,8 @@ import AddMagazineDialog from "./AddMagazine";
 import EditMagazineDialog from "./EditMagazine";
 
 import PreviewImage from "../PreviewImage";
-import { ConfirmationDialog } from "../confirmation-dialog";
+import { ConfirmationDialog } from "../ConfirmationDialog";
+
 export default function ListMagazines() {
   const [magazines, setMagazines] = useState([]);
   const [addMagazine, setAddMagazine] = useState(false);

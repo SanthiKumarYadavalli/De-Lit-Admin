@@ -16,7 +16,8 @@ import EditArticleDialog from "./EditArticle";
 
 const INITAL_DATA = [];
 
-import { ConfirmationDialog } from "../confirmation-dialog";
+import { ConfirmationDialog } from "../ConfirmationDialog";
+
 export default function ListArticles() {
   const [articles, setArticles] = useState(INITAL_DATA);
   const [addArticle, setAddArticle] = useState(false);
