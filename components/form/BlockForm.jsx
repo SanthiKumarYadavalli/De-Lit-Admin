@@ -21,9 +21,8 @@ const formSchema = z.object({
   description: z.string(),
 });
 
-export default function BlockForm() {
-  const [cover, setCover] = useState([]);
-  const [pdf, setPdf] = useState([]);
+export default function AnthologyForm() {
+  const [image, setImage] = useState([]);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -31,7 +30,7 @@ export default function BlockForm() {
 
   function onSubmit(values) {
     console.log(values);
-    console.log(cover);
+    console.log(image);
     console.log(pdf);
   }
 
@@ -63,7 +62,7 @@ export default function BlockForm() {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Write something about the anthology..."
+                  placeholder="Enter description"
                   className="resize-none"
                   rows={5}
                   {...field}
@@ -74,9 +73,8 @@ export default function BlockForm() {
           )}
         />
         
-        <MyFileInput type="image" name="cover" form={form} file={cover} setFile={setCover} label="Upload Cover Image" />
-        <MyFileInput type="pdf" name="pdf" form={form} file={pdf} setFile={setPdf} label="Upload PDF" />
-        <SubmitButton text={"Add new anthology"} disabled={cover.length === 0 || pdf.length === 0} />
+        <MyFileInput type="image" name="image" form={form} file={image} setFile={setImage} label="Upload Image" />
+        <SubmitButton text={"Add a new Block"} disabled={image.length === 0} />
       </form>
     </Form>
   );
