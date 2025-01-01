@@ -14,8 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
-import ImageInput from "./ImageInput";
-import PdfInput from "./PdfInput";
+import MyFileInput from "./MyFileInput";
 
 const formSchema = z.object({
   title: z.string(),
@@ -75,8 +74,8 @@ export default function AnthologyForm() {
           )}
         />
         
-        <ImageInput name="cover" form={form} file={cover} setFile={setCover} label="Upload Cover Image" />
-        <PdfInput name="pdf" form={form} file={pdf} setFile={setPdf} label="Upload PDF" />
+        <MyFileInput type="image" name="cover" form={form} file={cover} setFile={setCover} label="Upload Cover Image" />
+        <MyFileInput type="pdf" name="pdf" form={form} file={pdf} setFile={setPdf} label="Upload PDF" />
         <SubmitButton text={"Add new anthology"} disabled={cover.length === 0 || pdf.length === 0} />
       </form>
     </Form>
