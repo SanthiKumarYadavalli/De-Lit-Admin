@@ -1,6 +1,13 @@
 import React from "react";
-import ListArticles from "@/components/articles/ListArticles";
+import PageWrapper from "@/components/PageWrapper";
+import ArticleForm from "@/components/form/ArticleForm";
 
 export default function page() {
-  return <ListArticles />;
+  return (
+    <PageWrapper
+      title={"Articles"}
+      itemName="Article"
+      FormComponent={ArticleForm}
+    />
+  );
 }

@@ -1,6 +1,13 @@
 import React from "react";
-import ListMagazines from "@/components/magazines/ListMagazines";
+import PageWrapper from "@/components/PageWrapper";
+import MagazineForm from "@/components/form/MagazineForm";
 
 export default function page() {
-  return <ListMagazines />;
+  return (
+    <PageWrapper
+      title={"Magazines"}
+      itemName="Magazine"
+      FormComponent={MagazineForm}
+    />
+  );
 }
