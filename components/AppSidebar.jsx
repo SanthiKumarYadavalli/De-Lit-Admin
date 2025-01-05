@@ -114,8 +114,8 @@ export function AppSidebar() {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                {items.map((item) => (
-                  <Collapsible defaultOpen className="group/collapsible">
+                {items.map((item, i) => (
+                  <Collapsible key={i} defaultOpen className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton>
@@ -125,8 +125,8 @@ export function AppSidebar() {
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
-                      {item.subItems.map((subitem) => (
-                        <SidebarMenuSub>
+                      {item.subItems.map((subitem, i) => (
+                        <SidebarMenuSub key={i}>
                           <SidebarMenuSubItem>
                             <SidebarMenuButton asChild>
                               <Link href={subitem.link}>
