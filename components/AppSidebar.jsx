@@ -25,6 +25,7 @@ import {
   ChevronDown,
   LucideHome,
   MessageCircleHeart,
+  UsersRound,
 } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -75,6 +76,20 @@ const items = [
       {
         title: "Testimonials",
         link: "/club-talk/testimonials"
+      }
+    ]
+  },
+  {
+    menuTitle: "About Us",
+    icon: <UsersRound />,
+    subItems: [
+      {
+        title: "Info Sections",
+        link: "/about-us/info-sections"
+      },
+      {
+        title: "Members",
+        link: "/about-us/members"
       }
     ]
   }
