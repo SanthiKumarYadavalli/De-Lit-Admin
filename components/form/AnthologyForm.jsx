@@ -21,7 +21,7 @@ const formSchema = z.object({
   description: z.string(),
 });
 
-export default function BlockForm() {
+export default function AnthologyForm() {
   const [cover, setCover] = useState([]);
   const [pdf, setPdf] = useState([]);
 

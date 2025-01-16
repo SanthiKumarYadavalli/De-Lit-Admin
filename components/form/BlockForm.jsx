@@ -21,7 +21,7 @@ const formSchema = z.object({
   description: z.string(),
 });
 
-export default function AnthologyForm() {
+export default function BlockForm() {
   const [image, setImage] = useState([]);
 
   const form = useForm({

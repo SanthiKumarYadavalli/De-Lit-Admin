@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import BannerImageInput from "@/components/form/BannerImageInput";
+import EditImage from "@/components/form/EditImage";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Input } from "../ui/input";
@@ -28,17 +28,19 @@ export default function BannerForm() {
 
   return (
     <>
+      <h1 className="text-2xl font-bold mb-4">Banner & Motto</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full mx-auto py-10"
         >
         <div className="w-full h-full">
-          <BannerImageInput 
+          <EditImage 
             image={image}  
             file={file}
             setFile={setFile}
             form={form}
+            banner={true}
           />
         </div>
         <Input type="text" value={motto} className="text-center py-8"

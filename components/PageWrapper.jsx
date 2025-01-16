@@ -1,4 +1,3 @@
-"use client";
 import MyDialog from "./form/MyDialog";
 
 export default function PageWrapper({ title, itemName, children, FormComponent }) {
@@ -13,6 +12,7 @@ export default function PageWrapper({ title, itemName, children, FormComponent }
             </MyDialog>
           </div>
         </div>
+        {children}
       </div>
     </>
   );
