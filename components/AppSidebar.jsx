@@ -19,16 +19,14 @@ import {
 } from "@/components/ui/collapsible";
 import { useState } from "react";
 import {
-  Home,
   LogOut,
   LayoutDashboard,
   Book,
-  BookOpen,
   ChevronDown,
-  FileText,
   LucideHome,
+  MessageCircleHeart,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ConfirmationDialog } from "./ConfirmationDialog";
@@ -67,6 +65,16 @@ const items = [
       {
         title: "Articles",
         link: "/publications/articles"
+      }
+    ]
+  },
+  {
+    menuTitle: "Club Talk",
+    icon: <MessageCircleHeart />,
+    subItems: [
+      {
+        title: "Testimonials",
+        link: "/club-talk/testimonials"
       }
     ]
   }
@@ -128,7 +136,7 @@ export function AppSidebar() {
                       {item.subItems.map((subitem, i) => (
                         <SidebarMenuSub key={i}>
                           <SidebarMenuSubItem>
-                            <SidebarMenuButton asChild>
+                            <SidebarMenuButton asChild isActive={pathname === subitem.link}>
                               <Link href={subitem.link}>
                                 <span>{subitem.title}</span>
                               </Link>

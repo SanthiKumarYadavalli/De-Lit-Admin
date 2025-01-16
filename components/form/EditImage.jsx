@@ -4,7 +4,7 @@ import {
 } from "@/components/ui/file-upload";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { Edit2 } from "lucide-react";
+import { Edit2, ImageOff } from "lucide-react";
 import Image from "next/image";
 
 
@@ -36,20 +36,26 @@ export default function EditImage({ form, file, setFile, image, banner = false }
                     className="relative"
                     id="banner"
                   >
-                      {banner ? 
-                        (<Image
-                          src={image}
-                          alt="Banner"
-                          fill
-                          className="object-cover object-center"
-                        />
+                      {image ?
+                        (banner ? 
+                          (<Image
+                            src={image}
+                            alt="Banner"
+                            fill
+                            className="object-cover object-center"
+                          />
+                        ) : (
+                          <Image 
+                            src={image}
+                            alt="Image"
+                            fill
+                            className="object-contain"
+                          />
+                        )
                       ) : (
-                        <Image 
-                          src={image}
-                          alt="Image"
-                          fill
-                          className="object-contain"
-                        />
+                        <div className="flex flex-col gap-2 justify-center items-center w-full h-full text-slate-500">
+                          <ImageOff /><p>Image not available</p>
+                        </div>
                       )}
                       <div 
                         className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center hover:opacity-100 opacity-0 transition-all duration-300 ease-in-out hover:cursor-pointer"

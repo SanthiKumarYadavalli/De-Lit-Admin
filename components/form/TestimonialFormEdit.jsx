@@ -23,14 +23,14 @@ const formSchema = z.object({
   description: z.string(),
 });
 
-export default function BlockFormEdit({ record }) {
+export default function TestimonialFormEdit({ record }) {
   const [file, setFile] = useState([]);
   const [image, setImage] = useState(record.image_link);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: record.name,
-      description: record.content,
+      name: record.title,
+      quote: record.description,
     },
   });
 
@@ -56,10 +56,10 @@ export default function BlockFormEdit({ record }) {
           <div className="my-auto flex flex-col gap-5">
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="shadcn" type="" {...field} />
                   </FormControl>
@@ -69,10 +69,10 @@ export default function BlockFormEdit({ record }) {
             />
             <FormField
               control={form.control}
-              name="description"
+              name="quote"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Quote</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder=""
