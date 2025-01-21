@@ -5,9 +5,22 @@ import {
   FileUploaderContent,
   FileUploaderItem,
 } from "@/components/ui/file-upload";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "../ui/form";
 
-export default function MyFileInput({ name, form, file, setFile, label, type }) {
+export default function MyFileInput({
+  name,
+  form,
+  file,
+  setFile,
+  label,
+  type,
+}) {
   let accept, dropZoneText, Icon;
   if (type === "pdf") {
     accept = { "application/pdf": [".pdf"] };
@@ -34,7 +47,7 @@ export default function MyFileInput({ name, form, file, setFile, label, type }) 
               dropzoneOptions={{
                 maxFiles: 1,
                 multiple: false,
-                accept
+                accept,
               }}
               className="relative bg-background rounded-lg p-2"
             >
@@ -58,11 +71,11 @@ export default function MyFileInput({ name, form, file, setFile, label, type }) 
                   <FileUploaderItem index={0}>
                     <Paperclip className="h-4 w-4 stroke-current" />
                     <a
-                          href={URL.createObjectURL(file[0])}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                    <span>{file[0].name}</span>
+                      href={URL.createObjectURL(file[0])}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>{file[0].name}</span>
                     </a>
                   </FileUploaderItem>
                 )}

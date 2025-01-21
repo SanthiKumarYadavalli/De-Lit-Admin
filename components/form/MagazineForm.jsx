@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
 
@@ -71,7 +70,7 @@ export default function MagazineForm() {
           label="Upload PDF"
         />
         <SubmitButton
-          text={"Add new anthology"}
+          text={"Add new magazine"}
           disabled={cover.length === 0 || pdf.length === 0}
         />
       </form>
