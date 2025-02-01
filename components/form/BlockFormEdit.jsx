@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  Formcontent,
   FormField,
   FormItem,
   FormLabel,
@@ -20,17 +20,17 @@ import SubmitButton from "../SubmitButton";
 
 const formSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  content: z.string(),
 });
 
 export default function BlockFormEdit({ record }) {
   const [file, setFile] = useState([]);
-  const [image, setImage] = useState(record.image_link);
+  const [image, setImage] = useState(record.block_image_link);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: record.name,
-      description: record.content,
+      title: record.block_title,
+      content: record.block_content,
     },
   });
 
@@ -69,10 +69,10 @@ export default function BlockFormEdit({ record }) {
             />
             <FormField
               control={form.control}
-              name="description"
+              name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Content</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder=""

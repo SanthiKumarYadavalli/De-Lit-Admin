@@ -3,13 +3,13 @@ import { LoaderCircle } from "lucide-react";
 
 export default function SubmitButton({
   text,
-  onClick,
-  disabled,
-  isLoading,
+  onClick = () => {},
+  disabled = false,
+  isLoading = false,
   loadingText = "Please wait",
 }) {
   return (
-    <Button type="submit" onClick={onClick} disabled={disabled}>
+    <Button type="submit" onClick={onClick} disabled={isLoading || disabled}>
       {isLoading ? (
         <>
           <LoaderCircle className="h-4 w-4 animate-spin" />

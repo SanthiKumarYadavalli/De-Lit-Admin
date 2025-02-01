@@ -15,23 +15,33 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  content: z.string(),
 });
 
 export default function BlockForm() {
   const [image, setImage] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values) {
-    console.log(values);
-    console.log(image);
-    console.log(pdf);
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("block_title", values.title);
+    formData.append("block_content", values.content);
+    formData.append("block_image", image[0]);
+    try {
+      setIsLoading(true);
+      await postData("create_block", formData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -56,13 +66,13 @@ export default function BlockForm() {
 
         <FormField
           control={form.control}
-          name="description"
+          name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Content</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Enter description"
+                  placeholder="Enter content"
                   className="resize-none"
                   rows={5}
                   {...field}
@@ -74,7 +84,7 @@ export default function BlockForm() {
         />
         
         <MyFileInput type="image" name="image" form={form} file={image} setFile={setImage} label="Upload Image" />
-        <SubmitButton text={"Add a new Block"} disabled={image.length === 0} />
+        <SubmitButton text={"Add a new Block"} disabled={image.length === 0} isLoading={isLoading} loadingText="Adding..." />
       </form>
     </Form>
   );

@@ -5,12 +5,13 @@ import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import SubmitButton from "../SubmitButton";
+import { postData } from "@/services/api";
 
-export default function BannerForm() {
+export default function BannerForm({ bannerData }) {
   const [file, setFile] = useState([]);
-  const currMotto = "Building a like-minded community!";
-  const [motto, setMotto] = useState(currMotto);
-  const [image, setImage] = useState("https://www.pixel4k.com/wp-content/uploads/2023/02/the-batman-2022-wide-4k_1675639354-1536x864.jpg");
+  const [motto, setMotto] = useState(bannerData.banner[0].quote);
+  const [image, setImage] = useState(bannerData.banner[0].banner_link);
+  const [loading, setLoading] = useState(false);
   const form = useForm({});
 
   useEffect(() => {
@@ -21,9 +22,17 @@ export default function BannerForm() {
   }, [file]);
 
 
-  function onSubmit(values) {
-    console.log(file);
-    console.log(motto);
+  async function onSubmit(values) {
+    try {
+      const formData = new FormData();
+      if (file.length > 0) formData.append("banner", file[0]);
+      formData.append("quote", motto);
+      setLoading(true);
+      await postData("upload_banner", formData);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -47,7 +56,7 @@ export default function BannerForm() {
           style={{ fontSize: "1.5rem" }}
           onChange={(e) => setMotto(e.target.value)} 
         />
-        <SubmitButton text="Save Changes" onClick={onSubmit} disabled={file.length === 0 && motto === currMotto} />
+        <SubmitButton text="Save Changes" isLoading={loading} loadingText="Saving..." />
         </form>
       </Form>
     </>
