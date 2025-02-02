@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  Formcontent,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import EditImage from "./EditImage";
 import SubmitButton from "../SubmitButton";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   title: z.string(),
@@ -26,6 +25,8 @@ const formSchema = z.object({
 export default function BlockFormEdit({ record }) {
   const [file, setFile] = useState([]);
   const [image, setImage] = useState(record.block_image_link);
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +42,19 @@ export default function BlockFormEdit({ record }) {
     }
   }, [file]);
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("id", record.id);
+    formData.append("block_title", values.title);
+    formData.append("block_content", values.content);
+    if (file.length > 0) formData.append("block_image", file[0]);
+    try {
+      setIsLoading(true);
+      await postData("update_block", formData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -61,7 +73,7 @@ export default function BlockFormEdit({ record }) {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" type="" {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +99,7 @@ export default function BlockFormEdit({ record }) {
             />
           </div>
         </div>
-        <SubmitButton text="Save Changes" onClick={onSubmit} />
+        <SubmitButton text="Save Changes" isLoading={isLoading} loadingText="Saving..." />
       </form>
     </Form>
   );
