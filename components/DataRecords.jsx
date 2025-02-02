@@ -1,10 +1,11 @@
 "use client"
 import { useState } from "react"
-import { ChevronDown, ChevronUp, Trash } from 'lucide-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import DeleteButton from "./DeleteButton"
 
-export default function DataRecords({ data, displayField, EditForm }) {
+export default function DataRecords({ data, displayField, EditForm, deleteFunctionName }) {
   const [expandedRow, setExpandedRow] = useState(null)
 
   const toggleRow = (id) => {
@@ -28,9 +29,7 @@ export default function DataRecords({ data, displayField, EditForm }) {
                         <ChevronDown className="h-4 w-4" />
                       )}
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(record.id)}>
-                      <Trash className="h-4 w-4" />
-                    </Button>
+                    <DeleteButton functionName={deleteFunctionName} id={record.id} />
                   </div>
                 </div>
                 {expandedRow === i && (

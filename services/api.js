@@ -23,7 +23,7 @@ export async function postData(functionName, formData) {
 export async function deleteData(functionName, id) {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${functionName}/?id=${id}`, {
-      method: "DELETE",
+      method: "GET",  // Our so-called API doesn't support DELETE method
     });
   } catch (error) {
     console.error(error);
