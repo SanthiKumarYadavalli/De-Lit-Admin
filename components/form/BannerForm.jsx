@@ -6,6 +6,7 @@ import { Form } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import SubmitButton from "../SubmitButton";
 import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 export default function BannerForm({ bannerData }) {
   const [file, setFile] = useState([]);
@@ -13,6 +14,7 @@ export default function BannerForm({ bannerData }) {
   const [image, setImage] = useState(bannerData.banner[0].banner_link);
   const [loading, setLoading] = useState(false);
   const form = useForm({});
+  const submitForm = useFormSubmit(setLoading);
 
   useEffect(() => {
     if (file.length > 0) {
@@ -23,16 +25,10 @@ export default function BannerForm({ bannerData }) {
 
 
   async function onSubmit(values) {
-    try {
-      const formData = new FormData();
-      if (file.length > 0) formData.append("banner", file[0]);
-      formData.append("quote", motto);
-      setLoading(true);
-      await postData("upload_banner", formData);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
+    const formData = new FormData();
+    if (file.length > 0) formData.append("banner", file[0]);
+    formData.append("quote", motto);
+    await submitForm(() => postData("upload_banner", formData));
   }
 
   return (

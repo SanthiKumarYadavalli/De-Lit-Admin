@@ -3,23 +3,15 @@ import { deleteData } from "@/services/api";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 export default function DeleteButton({ functionName, id }) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   async function handleDelete() {
-    try {
-      setIsLoading(true);
-      await deleteData(functionName, id);
-      setIsLoading(false);
-      router.refresh();
-      setIsOpen(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await submitForm(() => deleteData(functionName, id));
   }
 
   return (

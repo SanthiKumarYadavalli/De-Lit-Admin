@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import EditImage from "./EditImage";
 import SubmitButton from "../SubmitButton";
 import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   name: z.string(),
@@ -33,6 +34,7 @@ export default function TestimonialFormEdit({ record }) {
       quote: record.content,
     },
   });
+  const submitForm = useFormSubmit(setIsLoading);
 
   useEffect(() => {
     if (file.length > 0) {
@@ -47,13 +49,7 @@ export default function TestimonialFormEdit({ record }) {
     formData.append("title", values.name);
     formData.append("content", values.quote);
     if (file.length > 0) formData.append("profile_image", file[0]);
-    try {
-      setIsLoading(true);
-      await postData("update_card", formData);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await submitForm(() => postData("update_card", formData));
   }
 
   return (

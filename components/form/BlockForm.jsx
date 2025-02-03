@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
 import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   title: z.string(),
@@ -29,20 +30,14 @@ export default function BlockForm({ setIsOpen }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   async function onSubmit(values) {
     const formData = new FormData();
     formData.append("block_title", values.title);
     formData.append("block_content", values.content);
     formData.append("block_image", image[0]);
-    try {
-      setIsLoading(true);
-      await postData("create_block", formData);
-      setIsLoading(false);
-      setIsOpen(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await submitForm(() => postData("create_block", formData));
   }
 
   return (

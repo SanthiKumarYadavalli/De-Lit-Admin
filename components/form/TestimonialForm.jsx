@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
 import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   name: z.string(),
@@ -28,20 +29,14 @@ export default function TestimonialForm({ setIsOpen }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   async function onSubmit(values) {
     const formData = new FormData();
     formData.append("title", values.name);
     formData.append("content", values.quote);
     if (file.length > 0) formData.append("profile_image", file[0]);
-    try {
-      setIsLoading(true);
-      await postData("create_card", formData);
-      setIsLoading(false);
-      setIsOpen(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await submitForm(() => postData("create_card", formData));
   }
 
   return (

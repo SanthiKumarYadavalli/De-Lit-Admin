@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import EditImage from "./EditImage";
 import SubmitButton from "../SubmitButton";
 import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   title: z.string(),
@@ -26,6 +27,7 @@ export default function BlockFormEdit({ record }) {
   const [file, setFile] = useState([]);
   const [image, setImage] = useState(record.block_image_link);
   const [isLoading, setIsLoading] = useState(false);
+  const submitForm = useFormSubmit(setIsLoading);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -48,13 +50,7 @@ export default function BlockFormEdit({ record }) {
     formData.append("block_title", values.title);
     formData.append("block_content", values.content);
     if (file.length > 0) formData.append("block_image", file[0]);
-    try {
-      setIsLoading(true);
-      await postData("update_block", formData);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await submitForm(() => postData("update_block", formData));
   }
 
   return (
