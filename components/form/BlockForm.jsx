@@ -22,7 +22,7 @@ const formSchema = z.object({
   content: z.string(),
 });
 
-export default function BlockForm() {
+export default function BlockForm({ setIsOpen }) {
   const [image, setImage] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,6 +39,7 @@ export default function BlockForm() {
       setIsLoading(true);
       await postData("create_block", formData);
       setIsLoading(false);
+      setIsOpen(false);
     } catch (error) {
       console.error(error);
     }

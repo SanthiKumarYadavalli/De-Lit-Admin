@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -7,12 +8,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
-export default function MyDialog({ heading, triggerText, children }) {
+export default function MyDialog({ heading, triggerText, Form }) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} onClose={() => setIsOpen(false)}>
       <DialogTrigger asChild>
-        <Button>
+        <Button onClick={() => setIsOpen(true)}>
           <Plus className="h-4 w-4" />
             {triggerText}
           </Button>
@@ -21,7 +24,7 @@ export default function MyDialog({ heading, triggerText, children }) {
         <DialogHeader>
           <DialogTitle className="text-center mt-3">{heading}</DialogTitle>
         </DialogHeader>
-        {children}
+        <Form setIsOpen={setIsOpen} />
       </DialogContent>
     </Dialog>
   );

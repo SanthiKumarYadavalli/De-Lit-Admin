@@ -22,7 +22,7 @@ const formSchema = z.object({
   quote: z.string(),
 });
 
-export default function TestimonialForm() {
+export default function TestimonialForm({ setIsOpen }) {
   const [file, setFile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
@@ -34,9 +34,14 @@ export default function TestimonialForm() {
     formData.append("title", values.name);
     formData.append("content", values.quote);
     if (file.length > 0) formData.append("profile_image", file[0]);
-    setIsLoading(true);
-    await postData("create_card", formData);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      await postData("create_card", formData);
+      setIsLoading(false);
+      setIsOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
