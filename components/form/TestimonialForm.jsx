@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   name: z.string(),
@@ -23,12 +24,19 @@ const formSchema = z.object({
 
 export default function TestimonialForm() {
   const [file, setFile] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("title", values.name);
+    formData.append("content", values.quote);
+    if (file.length > 0) formData.append("profile_image", file[0]);
+    setIsLoading(true);
+    await postData("create_card", formData);
+    setIsLoading(false);
   }
 
   return (
@@ -79,7 +87,7 @@ export default function TestimonialForm() {
           form={form}
           label="Upload display picture"
         />
-        <SubmitButton text="Add a new testimonial" onClick={onSubmit} />
+        <SubmitButton text="Add a new testimonial" isLoading={isLoading} loadingText="Adding..." />
       </form>
     </Form>
   );

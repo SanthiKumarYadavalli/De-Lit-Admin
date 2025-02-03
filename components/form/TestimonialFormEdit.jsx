@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,20 +15,22 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import EditImage from "./EditImage";
 import SubmitButton from "../SubmitButton";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  name: z.string(),
+  quote: z.string(),
 });
 
 export default function TestimonialFormEdit({ record }) {
   const [file, setFile] = useState([]);
-  const [image, setImage] = useState(record.image_link);
+  const [image, setImage] = useState(record.profile_image);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: record.title,
-      quote: record.description,
+      quote: record.content,
     },
   });
 
@@ -41,8 +41,19 @@ export default function TestimonialFormEdit({ record }) {
     }
   }, [file]);
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("id", record.id);
+    formData.append("title", values.name);
+    formData.append("content", values.quote);
+    if (file.length > 0) formData.append("profile_image", file[0]);
+    try {
+      setIsLoading(true);
+      await postData("update_card", formData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -61,7 +72,7 @@ export default function TestimonialFormEdit({ record }) {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" type="" {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +98,7 @@ export default function TestimonialFormEdit({ record }) {
             />
           </div>
         </div>
-        <SubmitButton text="Save Changes" onClick={onSubmit} />
+        <SubmitButton text="Save Changes" loadingText="Saving..." isLoading={isLoading} />
       </form>
     </Form>
   );
