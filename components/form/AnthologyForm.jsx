@@ -13,26 +13,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import useFormSubmit from "@/hooks/use-form-submit";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   title: z.string(),
   description: z.string(),
 });
 
-export default function AnthologyForm() {
+export default function AnthologyForm({ setIsOpen }) {
   const [cover, setCover] = useState([]);
   const [pdf, setPdf] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
-  function onSubmit(values) {
-    console.log(values);
-    console.log(cover);
-    console.log(pdf);
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("type", "anthology");
+
+    if (cover.length > 0) formData.append("image", cover[0]);
+    if (pdf.length > 0) formData.append("file", pdf[0]);
+
+    await submitForm(() => postData("create_publication", formData));
   }
 
   return (
@@ -73,10 +83,29 @@ export default function AnthologyForm() {
             </FormItem>
           )}
         />
-        
-        <MyFileInput type="image" name="cover" form={form} file={cover} setFile={setCover} label="Upload Cover Image" />
-        <MyFileInput type="pdf" name="pdf" form={form} file={pdf} setFile={setPdf} label="Upload PDF" />
-        <SubmitButton text={"Add new anthology"} disabled={cover.length === 0 || pdf.length === 0} />
+
+        <MyFileInput
+          type="image"
+          name="cover"
+          form={form}
+          file={cover}
+          setFile={setCover}
+          label="Upload Cover Image"
+        />
+        <MyFileInput
+          type="pdf"
+          name="pdf"
+          form={form}
+          file={pdf}
+          setFile={setPdf}
+          label="Upload PDF"
+        />
+        <SubmitButton
+          text={"Add new anthology"}
+          isLoading={isLoading}
+          loadingText="Adding..."
+          disabled={cover.length === 0 || pdf.length === 0}
+        />
       </form>
     </Form>
   );
