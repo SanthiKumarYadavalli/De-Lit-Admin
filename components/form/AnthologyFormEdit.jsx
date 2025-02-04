@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "../SubmitButton";
-import MyFileInput from "./MyFileInput";
 import EditImage from "./EditImage";
 import { Textarea } from "../ui/textarea";
 
@@ -23,10 +22,9 @@ const formSchema = z.object({
 });
 
 export default function AnthologyFormEdit({ record }) {
-  const [cover, setCover] = useState([]);
-  const [pdf, setPdf] = useState([]);
+  const [file, setFile] = useState([]);
   const [image, setImage] = useState(record.image_link);
-
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,64 +34,57 @@ export default function AnthologyFormEdit({ record }) {
   });
 
   useEffect(() => {
-    if (cover.length > 0) {
-      setImage(URL.createObjectURL(cover[0]));
+    if (file.length > 0) {
+      setImage(URL.createObjectURL(file[0]));
       window.scrollTo(0, document.body.scrollHeight);
     }
-  }, [cover]);
+  }, [file]);
 
   function onSubmit(values) {
     console.log(values);
-    console.log(cover);
-    console.log(pdf);
+    console.log(file);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 m-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter name" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Content</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Write something about the anthology..."
-                  className="resize-none"
-                  rows={5}
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="grid lg:grid-cols-2 gap-4 place-content-center align-middle">
-          <EditImage
-            form={form}
-            file={cover}
-            setFile={setCover}
-            image={image}
-          />
-          <div className="flex flex-col justify-center">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 max-w-3xl mx-auto py-10 max-lg:m-4"
+      >
+        <div className="grid lg:grid-cols-2 gap-4">
+          <EditImage form={form} file={file} setFile={setFile} image={image} />
+          <div className="my-auto flex flex-col gap-5">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder=""
+                      className="resize-none"
+                      rows={7}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {record.pdf_link && (
               <div className="mt-2">
                 <a
@@ -102,23 +93,18 @@ export default function AnthologyFormEdit({ record }) {
                   rel="noopener noreferrer"
                   className="text-primary underline hover:text-primary/80 text-sm"
                 >
-                  PDF Preview
+                  Document preview
                 </a>
               </div>
             )}
-            <MyFileInput
-              type="pdf"
-              name="pdf"
-              form={form}
-              file={pdf}
-              setFile={setPdf}
-              label="Upload PDF"
-            />
           </div>
         </div>
-
-        <div className="px-4">
-          <SubmitButton text={"Save Changes"} />
+        <div className="px-2">
+          <SubmitButton
+            text="Save Changes"
+            loadingText="Saving..."
+            isLoading={isLoading}
+          />
         </div>
       </form>
     </Form>
