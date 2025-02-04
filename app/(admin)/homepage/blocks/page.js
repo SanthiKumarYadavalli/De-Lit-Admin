@@ -3,9 +3,15 @@ import PageWrapper from "@/components/PageWrapper";
 import BlockForm from "@/components/form/BlockForm";
 import BlockFormEdit from "@/components/form/BlockFormEdit";
 import { getData } from "@/services/api";
+import Error from "@/components/Error";
 
 export default async function Page() {
-  const homeBlocks = (await getData("get_all_blocks")).blocks;
+  let homeBlocks = [];
+  try {
+    homeBlocks = (await getData("get_all_blocks")).blocks;
+  } catch (error) {
+    return <Error />;
+  }
   return (
     <PageWrapper title="Blocks" itemName="Block" AddForm={BlockForm}>
       <DataRecords
