@@ -14,23 +14,32 @@ import {
 import { Input } from "@/components/ui/input";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
+import useFormSubmit from "@/hooks/use-form-submit";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   title: z.string(),
 });
 
-export default function MagazineForm() {
+export default function MagazineForm({ setIsOpen }) {
   const [cover, setCover] = useState([]);
   const [pdf, setPdf] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values) {
-    console.log(values);
-    console.log(cover);
-    console.log(pdf);
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
+
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("type", "magazine");
+
+    if (cover.length > 0) formData.append("image", cover[0]);
+    if (pdf.length > 0) formData.append("file", pdf[0]);
+    await submitForm(() => postData("create_publication", formData));
   }
 
   return (
@@ -70,7 +79,9 @@ export default function MagazineForm() {
           label="Upload PDF"
         />
         <SubmitButton
-          text={"Add new magazine"}
+          text={"Add new anthology"}
+          isLoading={isLoading}
+          loadingText="Adding..."
           disabled={cover.length === 0 || pdf.length === 0}
         />
       </form>

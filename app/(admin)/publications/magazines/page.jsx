@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 
 import PageWrapper from "@/components/PageWrapper";
@@ -6,8 +5,15 @@ import MagazineForm from "@/components/form/MagazineForm";
 import DataRecords from "@/components/DataRecords";
 import { MAGAZINES } from "@/utils/dummy";
 import MagazineFormEdit from "@/components/form/MagazineFormEdit";
+import { getData } from "@/services/api";
 
-export default function page() {
+export default async function page() {
+  let data = [];
+  try {
+    data = (await getData("get_all_publications?type=magazine")).publications;
+  } catch (error) {
+    return <Error />;
+  }
   return (
     <PageWrapper
       title={"Magazines"}
@@ -15,9 +21,10 @@ export default function page() {
       AddForm={MagazineForm}
     >
       <DataRecords
-        data={MAGAZINES}
+        data={data}
         displayField="title"
         EditForm={MagazineFormEdit}
+        deleteFunctionName={"delete_publication"}
       />
     </PageWrapper>
   );

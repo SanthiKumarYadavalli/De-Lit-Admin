@@ -14,6 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import SubmitButton from "../SubmitButton";
 import EditImage from "./EditImage";
+import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   title: z.string(),
@@ -21,7 +23,7 @@ const formSchema = z.object({
 
 export default function MagazineFormEdit({ record }) {
   const [file, setFile] = useState([]);
-  const [image, setImage] = useState(record.image_link);
+  const [image, setImage] = useState(record.cover_image_link);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -37,9 +39,16 @@ export default function MagazineFormEdit({ record }) {
     }
   }, [file]);
 
-  function onSubmit(values) {
-    console.log(values);
-    console.log(file);
+  const submitForm = useFormSubmit(setIsLoading);
+
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("id", record.id);
+    formData.append("title", values.title);
+
+    if (file.length > 0) formData.append("image", file[0]);
+
+    await submitForm(() => postData("update_publication", formData));
   }
 
   return (
