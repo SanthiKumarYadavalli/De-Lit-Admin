@@ -79,7 +79,7 @@ export default function MagazineForm({ setIsOpen }) {
           label="Upload PDF"
         />
         <SubmitButton
-          text={"Add new anthology"}
+          text={"Add new magazine"}
           isLoading={isLoading}
           loadingText="Adding..."
           disabled={cover.length === 0 || pdf.length === 0}
