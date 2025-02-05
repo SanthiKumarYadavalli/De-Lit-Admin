@@ -8,6 +8,7 @@ import Loading from "@/components/Loading";
 import BatchFormAdd from "@/components/form/BatchFormAdd";
 import MyDialog from "@/components/form/MyDialog";
 import MemberFormAdd from "@/components/form/MemberFormAdd";
+import MemberFormEdit from "@/components/form/MemberFormEdit";
 
 export default function Page() {
   const [batches, setBatches] = useState({});
@@ -57,6 +58,7 @@ export default function Page() {
           <DataRecords
             data={batches[batch].members}
             displayField="member_name"
+            EditForm={MemberFormEdit}
             deleteFunctionName="delete_member"
           />
         </div>
