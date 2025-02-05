@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
+import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   title: z.string(),
@@ -22,16 +24,24 @@ const formSchema = z.object({
   author: z.string(),
 });
 
-export default function ArticleForm() {
+export default function ArticleForm({ setIsOpen }) {
   const [pdf, setPdf] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   function onSubmit(values) {
-    console.log(values);
-    console.log(pdf);
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("author", values.author);
+    formData.append("type", "article");
+
+    if (pdf.length > 0) formData.append("file", pdf[0]);
+
+    submitForm(() => postData("create_publication", formData));
   }
 
   return (
@@ -92,7 +102,12 @@ export default function ArticleForm() {
           setFile={setPdf}
           label="Upload PDF"
         />
-        <SubmitButton text={"Add new anthology"} disabled={pdf.length === 0} />
+        <SubmitButton
+          text={"Add new Article"}
+          isLoading={isLoading}
+          loadingText="Adding..."
+          disabled={pdf.length === 0}
+        />
       </form>
     </Form>
   );

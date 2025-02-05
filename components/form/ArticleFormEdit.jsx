@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
 import { Textarea } from "../ui/textarea";
+import { postData } from "@/services/api";
+import useFormSubmit from "@/hooks/use-form-submit";
 
 const formSchema = z.object({
   title: z.string(),
@@ -31,9 +33,18 @@ export default function ArticleFormEdit({ record }) {
       author: record.author,
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  function onSubmit(values) {
-    console.log(values);
+  const submitForm = useFormSubmit(setIsLoading);
+
+  async function onSubmit(values) {
+    const formData = new FormData();
+    formData.append("id", record.id);
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("author", values.author);
+
+    await submitForm(() => postData("update_publication", formData));
   }
 
   return (
@@ -58,7 +69,7 @@ export default function ArticleFormEdit({ record }) {
           name="author"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Author</FormLabel>
               <FormControl>
                 <Input placeholder="Enter Author's name" {...field} />
               </FormControl>
@@ -86,19 +97,23 @@ export default function ArticleFormEdit({ record }) {
             </FormItem>
           )}
         />
-                    {record.pdf_link && (
-              <div className="mt-2">
-                <a
-                  href={record.pdf_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline hover:text-primary/80 text-sm"
-                >
-                  Document preview
-                </a>
-              </div>
-            )}
-        <SubmitButton text="Save Changes" onClick={onSubmit} />
+        {record.publication_file_link && (
+          <div className="mt-2">
+            <a
+              href={record.publication_file_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline hover:text-primary/80 text-sm"
+            >
+              Document preview
+            </a>
+          </div>
+        )}
+        <SubmitButton
+          text="Save Changes"
+          loadingText="Saving..."
+          isLoading={isLoading}
+        />
       </form>
     </Form>
   );
