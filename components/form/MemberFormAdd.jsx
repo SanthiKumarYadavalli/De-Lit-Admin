@@ -13,6 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import SubmitButton from "../SubmitButton";
 import MyFileInput from "./MyFileInput";
 import { postData } from "@/services/api";
@@ -21,15 +29,31 @@ import useFormSubmit from "@/hooks/use-form-submit";
 const formSchema = z.object({
   name: z.string(),
   quote: z.string(),
-  about: z.string()
+  about: z.string(),
 });
 
-export default function MemberFormAdd({ setIsOpen, year, batch }) {
+export default function MemberFormAdd({ setIsOpen, batches }) {
   const [file, setFile] = useState([]);
+  const [checked, setChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [year, setYear] = useState(null);
+  const [batch, setBatch] = useState("");
+  console.log(batch, year);
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+
+  function handleChecked(e) {
+    setChecked(!checked);
+    setBatch("");
+    setYear(null);
+  }
+
+  function handleSelectChange(value) {
+    setBatch(value);
+    setYear(batches[value].year);
+  }
+
   const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   async function onSubmit(values) {
@@ -45,10 +69,7 @@ export default function MemberFormAdd({ setIsOpen, year, batch }) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -111,7 +132,84 @@ export default function MemberFormAdd({ setIsOpen, year, batch }) {
           form={form}
           label="Upload display picture"
         />
-        <SubmitButton text="Add a new Member" isLoading={isLoading} loadingText="Adding..." disabled={file.length === 0} />
+
+        <FormField
+          control={form.control}
+          name="new"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox checked={checked} onCheckedChange={handleChecked} />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>New Batch</FormLabel>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="batch"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Batch</FormLabel>
+              {!checked ? (
+                <Select onValueChange={handleSelectChange} defaultValue={batch}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select batch" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.keys(batches).map((b) => (
+                      <SelectItem key={b} value={b}>
+                        {b}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <FormControl>
+                  <Input
+                    placeholder="Enter batch"
+                    {...field}
+                    onChange={(e) => setBatch(e.target.value)}
+                  />
+                </FormControl>
+              )}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {checked && (
+          <FormField
+            name="year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Year</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter year"
+                    type="number"
+                    onChange={(e) => setYear(e.target.value)}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <SubmitButton
+          text="Add a new Member"
+          isLoading={isLoading}
+          loadingText="Adding..."
+          disabled={file.length === 0 || !batch || (checked && !year)}
+        />
       </form>
     </Form>
   );
