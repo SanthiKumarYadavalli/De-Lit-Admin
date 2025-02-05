@@ -11,7 +11,6 @@ export default function DataRecords({ data, displayField, EditForm, deleteFuncti
   const toggleRow = (id) => {
     setExpandedRow(expandedRow === id ? null : id)
   }
-  console.log(data);
 
   return (
     <div className="container mx-auto p-4">

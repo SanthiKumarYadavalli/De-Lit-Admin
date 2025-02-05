@@ -24,7 +24,7 @@ export default function MyDialog({ heading, triggerText, Form, ...props }) {
         <DialogHeader>
           <DialogTitle className="text-center mt-3">{heading}</DialogTitle>
         </DialogHeader>
-        <Form setIsOpen={setIsOpen} batches={props.batches} setBatches={props.setBatches} />
+        <Form setIsOpen={setIsOpen} {...props} />
       </DialogContent>
     </Dialog>
   );

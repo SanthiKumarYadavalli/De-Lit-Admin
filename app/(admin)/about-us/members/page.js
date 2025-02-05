@@ -6,6 +6,8 @@ import Error from "@/components/Error";
 import DataRecords from "@/components/DataRecords";
 import Loading from "@/components/Loading";
 import BatchFormAdd from "@/components/form/BatchFormAdd";
+import MyDialog from "@/components/form/MyDialog";
+import MemberFormAdd from "@/components/form/MemberFormAdd";
 
 export default function Page() {
   const [batches, setBatches] = useState({});
@@ -42,7 +44,16 @@ export default function Page() {
     <PageWrapper title="Members" itemName="Batch" AddForm={BatchFormAdd} setBatches={setBatches} batches={batches}>
       {Object.keys(batches).map(batch => (
         <div key={batch}>
-          <h2 className="text-xl font-semibold pt-4">{batch}</h2>
+          <div className="flex items-center justify-between px-4">
+            <h2 className="text-xl font-semibold pt-4">{batch}</h2>
+            <MyDialog 
+              heading={`Add a new member to ${batch}`}
+              triggerText="Add" 
+              Form={MemberFormAdd} 
+              year={batches[batch].year} 
+              batch={batch} 
+            />
+          </div>
           <DataRecords
             data={batches[batch].members}
             displayField="member_name"
