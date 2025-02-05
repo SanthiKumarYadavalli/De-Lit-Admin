@@ -1,28 +1,50 @@
+"use client";
+import { useState, useEffect } from "react";
 import PageWrapper from "@/components/PageWrapper";
 import { getData } from "@/services/api";
 import Error from "@/components/Error";
 import DataRecords from "@/components/DataRecords";
+import Loading from "@/components/Loading";
+import BatchFormAdd from "@/components/form/BatchFormAdd";
 
-export default async function Page() {
-  let batches = {};
-  try {
-    const data = (await getData("get_all_members")).members;
-    data.forEach(member => {
-      if (!batches[member.batch]) {
-        batches[member.batch] = [];
+export default function Page() {
+  const [batches, setBatches] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = (await getData("get_all_members")).members;
+        let batchMap = {};
+        data.forEach(member => {
+          if (!batchMap[member.batch]) {
+            batchMap[member.batch] = {};
+            batchMap[member.batch].year = member.year;
+            batchMap[member.batch].members = [];
+          }
+          batchMap[member.batch].members.push(member);
+        });
+        setBatches(batchMap);
+        setIsLoading(false);
+      } catch (error) {
+        setError(true);
+        setIsLoading(false);
       }
-      batches[member.batch].push(member);
-    });
-  } catch (error) {
-    return <Error />;
-  }
+    }
+    fetchData();
+  }, []);
+
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
+
   return (
-    <PageWrapper title="Members" itemName="Member">
+    <PageWrapper title="Members" itemName="Batch" AddForm={BatchFormAdd} setBatches={setBatches} batches={batches}>
       {Object.keys(batches).map(batch => (
         <div key={batch}>
           <h2 className="text-xl font-semibold pt-4">{batch}</h2>
           <DataRecords
-            data={batches[batch]}
+            data={batches[batch].members}
             displayField="member_name"
             deleteFunctionName="delete_member"
           />

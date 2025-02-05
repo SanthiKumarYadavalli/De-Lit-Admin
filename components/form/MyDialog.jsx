@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export default function MyDialog({ heading, triggerText, Form }) {
+export default function MyDialog({ heading, triggerText, Form, ...props }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} onClose={() => setIsOpen(false)}>
@@ -24,7 +24,7 @@ export default function MyDialog({ heading, triggerText, Form }) {
         <DialogHeader>
           <DialogTitle className="text-center mt-3">{heading}</DialogTitle>
         </DialogHeader>
-        <Form setIsOpen={setIsOpen} />
+        <Form setIsOpen={setIsOpen} batches={props.batches} setBatches={props.setBatches} />
       </DialogContent>
     </Dialog>
   );
