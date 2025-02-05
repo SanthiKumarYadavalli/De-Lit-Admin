@@ -3,7 +3,6 @@ import React from "react";
 import PageWrapper from "@/components/PageWrapper";
 import ArticleForm from "@/components/form/ArticleForm";
 import DataRecords from "@/components/DataRecords";
-import { ARTICLES } from "@/utils/dummy";
 import ArticleFormEdit from "@/components/form/ArticleFormEdit";
 import { getData } from "@/services/api";
 

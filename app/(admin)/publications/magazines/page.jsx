@@ -3,7 +3,6 @@ import React from "react";
 import PageWrapper from "@/components/PageWrapper";
 import MagazineForm from "@/components/form/MagazineForm";
 import DataRecords from "@/components/DataRecords";
-import { MAGAZINES } from "@/utils/dummy";
 import MagazineFormEdit from "@/components/form/MagazineFormEdit";
 import { getData } from "@/services/api";
 

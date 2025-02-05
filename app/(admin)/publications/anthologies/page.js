@@ -3,7 +3,6 @@ import React from "react";
 import PageWrapper from "@/components/PageWrapper";
 import AnthologyForm from "@/components/form/AnthologyForm";
 import DataRecords from "@/components/DataRecords";
-import { ANTHOLOGIES } from "@/utils/dummy";
 import AnthologyFormEdit from "@/components/form/AnthologyFormEdit";
 import { getData } from "@/services/api";
 
