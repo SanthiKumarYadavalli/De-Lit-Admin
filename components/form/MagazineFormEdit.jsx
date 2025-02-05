@@ -74,10 +74,10 @@ export default function MagazineFormEdit({ record }) {
               )}
             />
 
-            {record.pdf_link && (
+            {record.publication_file_link && (
               <div className="mt-2">
                 <a
-                  href={record.pdf_link}
+                  href={record.publication_file_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary underline hover:text-primary/80 text-sm"
