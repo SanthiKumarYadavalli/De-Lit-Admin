@@ -28,6 +28,7 @@ export default function BannerForm({ bannerData }) {
     const formData = new FormData();
     if (file.length > 0) formData.append("banner", file[0]);
     formData.append("quote", motto);
+    formData.append("id", "XPF9ssM8ujv7jInVmaYb");  // this updates the same document
     await submitForm(() => postData("upload_banner", formData));
   }
 
