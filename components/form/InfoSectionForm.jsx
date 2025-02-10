@@ -14,19 +14,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
+import useFormSubmit from "@/hooks/use-form-submit";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
-  name: z.string(),
-  quote: z.string(),
+  title: z.string(),
+  content: z.string(),
 });
 
-export default function InfoSectionForm() {
+export default function InfoSectionForm({ setIsOpen }) {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
+  const submitForm = useFormSubmit(setIsLoading, setIsOpen);
 
   function onSubmit(values) {
-    console.log(values);
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("content", values.content);
+    submitForm(() => postData("create_info", formData));
   }
 
   return (
@@ -69,7 +76,7 @@ export default function InfoSectionForm() {
             </FormItem>
           )}
         />
-        <SubmitButton text="Add new Section" onClick={onSubmit} />
+        <SubmitButton text="Add new Section" loadingText="Adding..." isLoading={isLoading} />
       </form>
     </Form>
   );

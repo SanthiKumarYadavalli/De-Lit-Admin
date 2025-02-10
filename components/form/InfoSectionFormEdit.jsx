@@ -14,13 +14,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import SubmitButton from "../SubmitButton";
+import useFormSubmit from "@/hooks/use-form-submit";
+import { postData } from "@/services/api";
 
 const formSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  content: z.string(),
 });
 
 export default function InfoSectionFormEdit({ record }) {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,9 +31,15 @@ export default function InfoSectionFormEdit({ record }) {
       content: record.content,
     },
   });
+  
+  const submitForm = useFormSubmit(setIsLoading);
 
   function onSubmit(values) {
-    console.log(values);
+    const formData = new FormData();
+    formData.append("id", record.id);
+    formData.append("title", values.title);
+    formData.append("content", values.content);
+    submitForm(() => postData("update_info", formData));
   }
 
   return (
@@ -73,7 +82,7 @@ export default function InfoSectionFormEdit({ record }) {
             </FormItem>
           )}
         />
-        <SubmitButton text="Save Changes" onClick={onSubmit} />
+        <SubmitButton text="Save Changes" loadingText="Saving..." isLoading={isLoading} />
       </form>
     </Form>
   );
