@@ -10,22 +10,14 @@ export async function getData(functionName) {
 }
 
 export async function postData(functionName, formData) {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${functionName}`, {
-      method: "POST",
-      body: formData,
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${functionName}`, {
+    method: "POST",
+    body: formData,
+  });
 }
 
 export async function deleteData(functionName, id) {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${functionName}/?id=${id}`, {
-      method: "GET",  // Our so-called API doesn't support DELETE method
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${functionName}/?id=${id}`, {
+    method: "GET",
+  });
 }
