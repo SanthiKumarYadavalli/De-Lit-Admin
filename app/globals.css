@@ -86,3 +86,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .my-scrollbar::-webkit-scrollbar {
+    width: 7px;
+  }
+  .my-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 10px;
+  }
+
+}

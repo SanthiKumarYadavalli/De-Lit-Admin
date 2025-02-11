@@ -20,7 +20,7 @@ export default function MyDialog({ heading, triggerText, Form, ...props }) {
             {triggerText}
           </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[80%] overflow-auto">
+      <DialogContent className="max-h-[90%] overflow-auto my-scrollbar">
         <DialogHeader>
           <DialogTitle className="text-center mt-3">{heading}</DialogTitle>
         </DialogHeader>
