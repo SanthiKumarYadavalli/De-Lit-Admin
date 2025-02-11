@@ -17,7 +17,7 @@ export default function DataRecords({ data, displayField, EditForm, deleteFuncti
       <div>
         <div className="space-y-4">
           {data.map((record, i) => (
-            <Card key={i} className="hover:shadow-sm hover:shadow-slate-500">
+            <Card key={i} className="hover:shadow-sm dark:shadow-gray-800 dark:hover:shadow-sm">
               <CardContent className="p-0">
                 <div className="flex items-center justify-between mr-4">
                   <h2 className="text-lg font-semibold cursor-pointer flex-1 p-4" onClick={() => toggleRow(i)}>{record[displayField]}</h2>
